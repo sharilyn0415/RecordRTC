@@ -1,0 +1,31 @@
+<html>
+<head>
+	<script>
+		var loadData = function() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(xhttp.readyState == 4 && xhttp.status == 200) {
+					if(xhttp.responseText == "") {
+						return;
+					}
+					var videos = JSON.parse(xhttp.responseText);
+					if(videos.length == 0) {
+						var res = "<th>There is no videos!</th>";
+					} else {
+						var res = "<tr><th>File Name</th><th></th></tr>";
+						for(var i = 0; i < videos.length; i++) {
+							res += "<tr><td>"+videos[i].title+"</td><td><a href='uploads/"+videos[i].pathname+"."+videos[i].extension+"' target='_blank'>Play</a></td></tr>";
+						}
+					}
+					document.getElementById("data").innerHTML = res;
+				}
+			};
+			xhttp.open("GET", "videos.php", true);
+			xhttp.send();
+		}
+	</script>
+</head>
+<body onload="loadData()">
+	<table id="data" class="table table-hover"></table>
+</body>
+</html>
